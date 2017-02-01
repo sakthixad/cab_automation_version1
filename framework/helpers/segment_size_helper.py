@@ -18,16 +18,18 @@ logger = logging.getLogger("cab.helpers.segmentsizehelper")
 
 
 
-def segment_size_post(main_type,generic_input_dict):
+def segment_size_post(main_type,generic_input_dict,db_validation):
 
     cnx = mysql_connect("xadcms")
 
     request_obj = build_request_payload_segment_size(main_type,generic_input_dict)
+
     path = API_URL + "/segment_size?query="+str(request_obj)
     logger.debug("Request Path: "+path)
 
     if request_obj is not None:
         logger.debug("Request Body: " +request_obj)
+
         response = requests.get(path)
 
     logger.debug("Response Body: " + str(response.content))
@@ -35,23 +37,26 @@ def segment_size_post(main_type,generic_input_dict):
 
     if response.status_code is 200:
 
-        # DB Validations
-        input_for_query_builder = token_converter_for_query_builder(generic_input_dict)
-        main_query= segment_sql_query_builder(main_type,input_for_query_builder)
-        logger.debug("SQL Query: "+main_query)
-        data = get_result(cnx, main_query)
-        logger.debug("SQl Query Result: "+str(data))
+       if db_validation is True:
 
-        # Compare the result of the rest call with the results of the sql query
-        db_result = str(data['count(distinct u.uid)'])
-        response_result = response.json()['num_audience']
+            # DB Validations
+            input_for_query_builder = token_converter_for_query_builder(generic_input_dict)
+            main_query= segment_sql_query_builder(main_type,input_for_query_builder)
+            logger.debug("SQL Query: "+main_query)
+            data = get_result(cnx, main_query)
+            logger.debug("SQl Query Result: "+str(data))
 
-        if str(db_result) != str(response_result):
-            raise Exception("User count from the end point- "+str(response_result)+" and User count from the db query- "+str(db_result))
+            # Compare the result of the rest call with the results of the sql query
+            db_result = str(data['count(distinct u.uid)'])
+            response_result = response.json()['num_audience']
 
-        cnx.close()
+            if str(db_result) != str(response_result):
+                raise Exception("User count from the end point- "+str(response_result)+" and User count from the db query- "+str(db_result))
 
-def segment_size_post_single_object(type,value):
+            cnx.close()
+
+
+def segment_size_post_single_object(type,value,db_validation):
 
     cnx = mysql_connect("xadcms")
 
@@ -61,7 +66,9 @@ def segment_size_post_single_object(type,value):
     }
     path = API_URL + "/segment_size?query="+json.dumps(query)
     logger.debug("Request Path: "+path)
+
     logger.debug("Request Body: "+json.dumps(query))
+
     response = requests.get(path)
 
     logger.debug("Response Body: " + str(response.content))
@@ -69,23 +76,22 @@ def segment_size_post_single_object(type,value):
 
     if response.status_code is 200:
 
-        return "Success"
+       if db_validation is True:
 
+            # DB Validations
+            main_query= "select count(distinct uid) from userstore where token='"+str(token_converter_for_query_builder(type))+"'AND token_value= '"+str(value)+"'"
+            logger.debug("SQL Query: "+main_query)
+            data = get_result(cnx, main_query)
+            logger.debug("SQl Query Result: "+str(data))
 
-        # DB Validations
-        main_query= "select count(distinct uid) from userstore where token='"+str(token_converter_for_query_builder(type))+"'AND token_value= '"+str(value)+"'"
-        logger.debug("SQL Query: "+main_query)
-        data = get_result(cnx, main_query)
-        logger.debug("SQl Query Result: "+str(data))
+            # Compare the result of the rest call with the results of the sql query
+            db_result = str(data['count(distinct uid)'])
+            response_result = response.json()['num_audience']
 
-        # Compare the result of the rest call with the results of the sql query
-        db_result = str(data['count(distinct uid)'])
-        response_result = response.json()['num_audience']
+            if str(db_result) != str(response_result):
+                raise Exception("User count from the end point- "+str(response_result)+" and User count from the db query- "+str(db_result))
 
-        if str(db_result) != str(response_result):
-            raise Exception("User count from the end point- "+str(response_result)+" and User count from the db query- "+str(db_result))
-
-        cnx.close()
+            cnx.close()
 
 
 

@@ -24,6 +24,14 @@ def get_result(cnx,query):
     for row in result:
         return row
 
+def get_all_result(cnx,query):
+
+    sql = query
+    cur = cnx.cursor(dictionary=True)
+    cur.execute(sql)
+    result = cur.fetchall()
+    return result
+
 def get_result_set_list(cnx,query, col_name):
 
     list = []

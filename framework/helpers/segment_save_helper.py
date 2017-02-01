@@ -23,20 +23,38 @@ root_logger.setLevel(level)
 logger = logging.getLogger("cab.helpers.segmentsavehelper")
 
 
-def segment_save_post(request_obj):
+def segment_save_post(main_type,generic_input_dict):
 
-    path = API_URL + "/segment/save?query="
+    cnx = mysql_connect("xadcms")
+    request_obj = build_request_payload_segment_size(main_type,generic_input_dict)
+    path = API_URL + "/segment_save?query="+str(request_obj)+"&segment_md5=1006"
     logger.debug("Request Path: "+path)
 
     if request_obj is not None:
         logger.debug("Request Body: " +request_obj)
-        response = requests.post(path, data=request_obj)
-    else:
-        logger.debug("Request Body: None")
-        response = requests.post(path)
+        response = requests.get(path)
 
     logger.debug("Response Body: " + str(response.content))
     logger.debug("Response Code: " + str(response.status_code))
+
+
+    if response.status_code is 200:
+
+        # DB Validations
+        input_for_query_builder = token_converter_for_query_builder(generic_input_dict)
+        main_query= segment_sql_query_builder(main_type,input_for_query_builder)
+        logger.debug("SQL Query: "+main_query)
+        data = get_result(cnx, main_query)
+        logger.debug("SQl Query Result: "+str(data))
+
+        # Compare the result of the rest call with the results of the sql query
+        db_result = str(data['count(distinct u.uid)'])
+        response_result = response.json()['num_audience']
+
+        if str(db_result) != str(response_result):
+            raise Exception("User count from the end point- "+str(response_result)+" and User count from the db query- "+str(db_result))
+
+        cnx.close()
 
 
 def segment_save_post_single_object(type,value):
@@ -47,7 +65,7 @@ def segment_save_post_single_object(type,value):
         "type": type,
         "value": value
     }
-    path = API_URL + "/segment_save?query="+json.dumps(query)+"&segment_md5=333"
+    path = API_URL + "/segment_save?query="+json.dumps(query)+"&segment_md5=1001"
     logger.debug("Request Path: "+path)
     logger.debug("Request Body: "+json.dumps(query))
     response = requests.get(path)
