@@ -316,12 +316,9 @@ def user_count_age(current_year, age_enum):
     print 'Filter uids < ', str(age_limit)
 
     results = []
-    # Filter uids which match the enum condition.
-    thefile = open('test.txt', 'w')
+    # Filter uids which match the enum condition
     for uid in users_count:
         if users_count[uid] < age_limit:
-            print uid
-            thefile.write("%s\n" % uid)
             results.append(uid)
 
 
