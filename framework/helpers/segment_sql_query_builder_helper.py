@@ -224,7 +224,7 @@ def segment_sql_query_builder(main_type, token_map):
 
 def user_count_by_gender(gender_type):
 
-    cnx = mysql_connect('xadcms')
+    cnx = mysql_connect('test_cab')
 
     pg_query = "select distinct uid as uid, token_value from userstore where token='pg'"
     data = get_all_result(cnx, pg_query)
@@ -276,7 +276,7 @@ def user_count_age(current_year, age_enum):
         7: 999
     }
 
-    cnx = mysql_connect('xadcms')
+    cnx = mysql_connect('test_cab')
 
     actual_query = "select distinct uid as uid, token_value from userstore where token='a' "
 

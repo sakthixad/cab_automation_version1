@@ -25,7 +25,7 @@ logger = logging.getLogger("cab.helpers.segmentsavehelper")
 
 def segment_save_post(main_type,generic_input_dict):
 
-    cnx = mysql_connect("xadcms")
+    cnx = mysql_connect("test_cab")
     request_obj = build_request_payload_segment_size(main_type,generic_input_dict)
     path = API_URL + "/segment_save?query="+str(request_obj)+"&segment_md5=1006"
     logger.debug("Request Path: "+path)
@@ -59,7 +59,7 @@ def segment_save_post(main_type,generic_input_dict):
 
 def segment_save_post_single_object(type,value):
 
-    cnx = mysql_connect("xadcms")
+    cnx = mysql_connect("test_cab")
 
     query = {
         "type": type,
@@ -83,7 +83,7 @@ def segment_save_post_single_object(type,value):
         cnx.close()
 
         # DB Validations
-        cnx=mysql_connect("xadcms")
+        cnx=mysql_connect("test_cab")
         main_query= "select count(distinct uid) from userstore where uid in (select uid from userstore where token='ir' AND token_value='0') and (token='"+str(token_converter_for_query_builder(type))+"'AND token_value= '"+str(value)+"')"
         logger.debug("SQL Query: "+main_query)
         data = get_result(cnx, main_query)

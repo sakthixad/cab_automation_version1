@@ -4,7 +4,7 @@ def mysql_connect(db_name):
 
     cnx = connection.MySQLConnection(user='root',
                                          password='venableroot',
-                                         host='ec2-54-196-26-194.compute-1.amazonaws.com',
+                                         host='ec2-52-39-137-40.us-west-2.compute.amazonaws.com',
                                          port=3336,
                                          database=db_name)
     return cnx

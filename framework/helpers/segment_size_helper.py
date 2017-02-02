@@ -20,7 +20,7 @@ logger = logging.getLogger("cab.helpers.segmentsizehelper")
 
 def segment_size_post(main_type,generic_input_dict,db_validation):
 
-    cnx = mysql_connect("xadcms")
+    cnx = mysql_connect("test_cab")
 
     request_obj = build_request_payload_segment_size(main_type,generic_input_dict)
 
@@ -58,7 +58,7 @@ def segment_size_post(main_type,generic_input_dict,db_validation):
 
 def segment_size_post_single_object(type,value,db_validation):
 
-    cnx = mysql_connect("xadcms")
+    cnx = mysql_connect("test_cab")
 
     query = {
         "type": type,
