@@ -1,5 +1,4 @@
 from config import API_URL
-from framework.helpers.mysql_helper import *
 from framework.helpers.segment_sql_query_builder_helper import *
 from framework.helpers.segment_request_builder_helper import *
 import requests
@@ -13,18 +12,15 @@ formatter = logging.Formatter(
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 logger.setLevel(logging.DEBUG)
-
 logger = logging.getLogger("cab.helpers.segmentsizehelper")
-
-
 
 def segment_size_post(main_type,generic_input_dict,db_validation):
 
     cnx = mysql_connect("test_cab")
 
     request_obj = build_request_payload_segment_size(main_type,generic_input_dict)
-
     path = API_URL + "/segment_size?query="+str(request_obj)
+
     logger.debug("Request Path: "+path)
 
     if request_obj is not None:
@@ -55,6 +51,8 @@ def segment_size_post(main_type,generic_input_dict,db_validation):
 
             cnx.close()
 
+       return response_result
+
 
 def segment_size_post_single_object(type,value,db_validation):
 
@@ -76,6 +74,8 @@ def segment_size_post_single_object(type,value,db_validation):
 
     if response.status_code is 200:
 
+       response_result = response.json()['num_audience']
+
        if db_validation is True:
 
             # DB Validations
@@ -86,12 +86,14 @@ def segment_size_post_single_object(type,value,db_validation):
 
             # Compare the result of the rest call with the results of the sql query
             db_result = str(data['count(distinct uid)'])
-            response_result = response.json()['num_audience']
 
             if str(db_result) != str(response_result):
                 raise Exception("User count from the end point- "+str(response_result)+" and User count from the db query- "+str(db_result))
 
             cnx.close()
+
+       return response_result
+
 
 
 

@@ -2,8 +2,6 @@ import json
 
 def build_request_payload_segment_size(main_type,token_map):
 
-    categ_pre = "l:"
-
     main_value = []
 
     for key in token_map:

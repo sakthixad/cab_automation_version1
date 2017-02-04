@@ -1,5 +1,6 @@
 import json
 from collections import defaultdict
+import random
 from framework.helpers.mysql_helper import *
 
 def token_converter_for_query_builder(input):
@@ -222,6 +223,8 @@ def segment_sql_query_builder(main_type, token_map):
 
     return main_query
 
+
+
 def user_count_by_gender(gender_type):
 
     cnx = mysql_connect('test_cab')
@@ -249,6 +252,10 @@ def user_count_by_gender(gender_type):
                 main_gender = 'f'
                 if temp_count['m'] > temp_count['f']:
                     main_gender = 'm'
+                elif temp_count['m'] < temp_count['f']:
+                    main_gender = 'f'
+                else:
+                    main_gender = random.choice(temp_count.keys())
                 users_count[main_gender] += 1
 
             # count for new uid
@@ -261,6 +268,63 @@ def user_count_by_gender(gender_type):
     cnx.close()
 
     return users_count[gender_type]
+
+def user_count_by_gender_logic2(gender_type):
+
+    cnx = mysql_connect('test_cab')
+
+    pg_query_by_gender = "select count(distinct uid) from userstore where token='pg' and token_value='"+gender_type+"'"
+    data = get_result(cnx, pg_query_by_gender)
+    pg_query_count_by_gender = (data['count(distinct uid)'])
+    cnx.close()
+
+    cnx = mysql_connect('test_cab')
+    gender_query = ("select uid, token_value from userstore where token='g' "
+                    "and uid not in (select uid from userstore where token= 'pg')")
+    data = get_all_result(cnx, gender_query)
+    uid_gender_map =dict()
+
+    for row in data:
+        if row['uid'] not in uid_gender_map.keys():
+             uid_gender_map[row['uid']] = []
+             uid_gender_map[row['uid']].append(row['token_value'])
+        else:
+            uid_gender_map[row['uid']].append(row['token_value'])
+    cnx.close()
+
+    gender_map_final = dict()
+
+    for key in uid_gender_map:
+        pg =''
+        value_list = uid_gender_map[key]
+        m_count= 0
+        f_count= 0
+        for i in value_list:
+            if i == 'm':
+                m_count +=1
+            else:
+                f_count +=1
+
+        if m_count > f_count:
+         pg='m'
+        elif f_count > m_count:
+         pg='f'
+        else:
+         g =['m','f']
+         pg = random.choice(g)
+
+        gender_map_final[key] = pg
+
+    sub_gen_count =0
+
+    for key in gender_map_final:
+        v = gender_map_final[key]
+        if v == gender_type:
+            sub_gen_count +=1
+
+
+    return sub_gen_count+int(pg_query_count_by_gender)
+
 
 def user_count_age(current_year, age_enum):
 
@@ -287,7 +351,6 @@ def user_count_age(current_year, age_enum):
     for row in data:
         uid = row['uid']
         if row['token_value'] == '':
-            print row
             continue
         age = current_year - int(row['token_value'])
         if uid != cur_uid:
@@ -299,6 +362,10 @@ def user_count_age(current_year, age_enum):
                     if temp_count[k] > best_count:
                         best_count = temp_count[k]
                         best_age = k
+
+                # If the max frequency is 1 implies no majority can be found.
+                if best_count == 1:
+                    best_age = random.choice(temp_count.keys())
                 users_count[cur_uid] = best_age
 
             # count for new uid
@@ -313,15 +380,33 @@ def user_count_age(current_year, age_enum):
     age_limit = 0
     if age_enum in age_map:
         age_limit = age_map[age_enum]
-    print 'Filter uids < ', str(age_limit)
 
     results = []
+
     # Filter uids which match the enum condition
     for uid in users_count:
-        if users_count[uid] < age_limit:
+
+        if age_limit is 18:
+         if (users_count[uid] >= 13) and (users_count[uid] <=17) :
             results.append(uid)
-
-
+        if age_limit is 25:
+            if (users_count[uid] >= 18) and (users_count[uid] <=24) :
+             results.append(uid)
+        if age_limit is 35:
+            if (users_count[uid] >= 25) and (users_count[uid] <=34) :
+             results.append(uid)
+        if age_limit is 45:
+            if (users_count[uid] >= 35) and (users_count[uid] <=44) :
+             results.append(uid)
+        if age_limit is 55:
+            if (users_count[uid] >= 45) and (users_count[uid] <=54) :
+             results.append(uid)
+        if age_limit is 65:
+            if (users_count[uid] >= 55) and (users_count[uid] <=64) :
+             results.append(uid)
+        if age_limit is 999:
+            if users_count[uid] >= 65 :
+             results.append(uid)
 
     return len(results)
 
