@@ -33,6 +33,8 @@ def segment_size_post(main_type,generic_input_dict,db_validation):
 
     if response.status_code is 200:
 
+       response_result = response.json()['num_audience']
+
        if db_validation is True:
 
             # DB Validations

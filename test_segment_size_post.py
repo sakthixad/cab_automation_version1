@@ -142,17 +142,17 @@ class SegmentSizePostTests(unittest.TestCase):
     #
     #      segment_save_post("AND",request)
     #
-     # Find users who lives in usa and in state ca or in state arizona but not in dma los angeles
-     def test_users_in_country_us_and_in_state_ca_or_in_az_but_not_in_dma_los_angeles(self):
-
-         logger.info("### Usecase: Find users who lives in usa and in state california or in state arizona but not in dma los angeles ###")
-         request = {
-              "NOT":{"dma":["803"]},
-              "country":{"direct":["us"]},
-              "OR":{"state":["ca","az"]}
-         }
-
-         segment_size_post("AND",request,db_validation=True)
+     # # Find users who lives in usa and in state ca or in state arizona but not in dma los angeles
+     # def test_users_in_country_us_and_in_state_ca_or_in_az_but_not_in_dma_los_angeles(self):
+     #
+     #     logger.info("### Usecase: Find users who lives in usa and in state california or in state arizona but not in dma los angeles ###")
+     #     request = {
+     #          "NOT":{"dma":["803"]},
+     #          "country":{"direct":["us"]},
+     #          "OR":{"state":["ca","az"]}
+     #     }
+     #
+     #     segment_size_post("AND",request,db_validation=True)
      #
      # # Find users who lives in usa and in state ca or in state arizona but not in dma los angeles
      # def test_users_in_country_us_and_in_state_ca_and_in_texas_and_in_ny_but_not_in_dma_los_angeles(self):
@@ -450,40 +450,40 @@ class SegmentSizePostTests(unittest.TestCase):
     #
     #
     # # # #  ##################### Custom Audiences and Country #######################
-    #
-    #  #Usecase: Find users who live in country US and belong to custom audience seg1='94167'
-    #  def test_country_and_segments(self):
-    #
-    #      logger.info("### Usecase:  Find users who live in country US and belong to custom audience seg1='94167' ###")
-    #      request = {
-    #           "country":{"direct":["us"]},
-    #           "segment":{"direct":["94167"]}
-    #      }
-    #
-    #      segment_size_post("AND",request,db_validation=True)
-    #
-    #  #Usecase: Find users who live in country US and belong to custom audience seg1='94167' or seg='93767'
-    #  def test_country_and_segments_with_or(self):
-    #
-    #      logger.info("### Usecase:Find users who live in country US and belong to custom audience seg1='94167' or seg='93767 ###")
-    #      request = {
-    #           "country":{"direct":["us"]},
-    #           "OR":{"segment":["94167","93767"]}
-    #      }
-    #
-    #      segment_size_post("AND",request,db_validation=True)
-    #
-    #  #Usecase: Find users who live in country US and belong to custom audience seg1='94167' and not seg='93767'
-    #  def test_country_and_segments_with_and_not(self):
-    #
-    #      logger.info("### Usecase:Find users who live in country US and belong to custom audience seg1='94167' and not seg='93767' ###")
-    #      request = {
-    #           "country":{"direct":["us"]},
-    #           "segment":{"direct":["94167"]},
-    #           "NOT":{"segment":["93767"]}
-    #      }
-    #
-    #      segment_size_post("AND",request,db_validation=True)
+
+     #Usecase: Find users who live in country US and belong to custom audience seg1='214991'
+     def test_country_and_segments(self):
+
+         logger.info("### Usecase:  Find users who live in country US and belong to custom audience seg1='202551' ###")
+         request = {
+              "country":{"direct":["us"]},
+              "segment":{"direct":["202551"]}
+         }
+
+         segment_size_post("AND",request,db_validation=True)
+
+     # #Usecase: Find users who live in country US and belong to custom audience seg1='94167' or seg='93767'
+     # def test_country_and_segments_with_or(self):
+     #
+     #     logger.info("### Usecase:Find users who live in country US and belong to custom audience seg1='94167' or seg='93767 ###")
+     #     request = {
+     #          "country":{"direct":["us"]},
+     #          "OR":{"segment":["94167","93767"]}
+     #     }
+     #
+     #     segment_size_post("AND",request,db_validation=True)
+     #
+     # #Usecase: Find users who live in country US and belong to custom audience seg1='94167' and not seg='93767'
+     # def test_country_and_segments_with_and_not(self):
+     #
+     #     logger.info("### Usecase:Find users who live in country US and belong to custom audience seg1='94167' and not seg='93767' ###")
+     #     request = {
+     #          "country":{"direct":["us"]},
+     #          "segment":{"direct":["94167"]},
+     #          "NOT":{"segment":["93767"]}
+     #     }
+     #
+     #     segment_size_post("AND",request,db_validation=True)
 
 
 

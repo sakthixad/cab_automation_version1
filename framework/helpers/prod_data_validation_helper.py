@@ -4,7 +4,7 @@ from framework.helpers.mysql_helper import *
 
 def verify_data_in_db_helper(count, query_number, desc_query):
 
-    # Get the count recorded the previous run and verify it with the new count. If the difference is more than 10% raise an Exception
+    # Get the count recorded the previous run and verify it with the new count. If the difference is more than 10% raise an exception
     cnx = mysql_connect("test_cab")
     query = "select * from prod_data where query_id='"+query_number+"' ORDER BY id DESC LIMIT 1"
     data = get_result(cnx,query)
