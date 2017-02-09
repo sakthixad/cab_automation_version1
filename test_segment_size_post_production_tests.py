@@ -1,6 +1,7 @@
 import unittest
 from framework.helpers.segment_size_helper import *
 from framework.helpers.prod_data_validation_helper import *
+from framework.helpers.prod_data_validation_helper import t
 import logging
 
 logger = logging.getLogger("cab.tests.ProductionTests")
@@ -933,9 +934,46 @@ class ProductionTests(unittest.TestCase):
     count = response.json()['num_audience']
     verify_data_in_db_helper(count,"67",query)
 
+ ################## Test cases to verify the operations on the application ######################
 
+ def test_country_and_or_between_states_and_exlude_multiple_dmas(self):
 
+    query = "Find users who live in US and visited states(ca or mn or ny) and exclude (los angeles or minneapolis)"
+    logger.info("### Usecase:"+str(query)+" ###")
 
+    request = {
+                        "type": "AND",
+                        "value": [
+                          {"type": "country","value": "us"},
+                          {"type": "OR","value": [{"type": "state","value": "ca"},
+                                                  {"type": "state","value": "mn"},
+                                                  {"type": "state","value": "ny"}
+                                                 ]
+                          },
+                          {
+                           "type": "OR","value": [{"type": "NOT","value": {"type": "dma","value": 803}},
+                                                  {"type": "NOT","value": {"type": "dma","value": 613}}]
+
+                          }
+
+                          ]
+             }
+
+    path = API_URL + "/segment_size?query="+str(json.dumps(request))
+    logger.debug("Request Path: "+path)
+    logger.debug("Request Body: " +json.dumps(request))
+    response = requests.get(path)
+
+    logger.debug("Response Body: " + str(response.content))
+    logger.debug("Response Code: " + str(response.status_code))
+
+ @classmethod
+ def tearDownClass(cls):
+
+     logger.info("#######################################################")
+     logger.info("################## Query Results ######################")
+     logger.info("#######################################################")
+     print t
 
 
 

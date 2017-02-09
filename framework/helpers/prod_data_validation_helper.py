@@ -1,5 +1,8 @@
 import datetime
 from framework.helpers.mysql_helper import *
+from prettytable import PrettyTable
+
+t= PrettyTable(['Query', 'Previous_build_count', 'New_build_count', 'Difference_in_Count'])
 
 
 def verify_data_in_db_helper(count, query_number, desc_query):
@@ -10,7 +13,9 @@ def verify_data_in_db_helper(count, query_number, desc_query):
     data = get_result(cnx,query)
     previous_day_count = data['user_count']
     today_count = count
+    diff = int(today_count)-int(previous_day_count)
     cnx.close()
+    t.add_row([desc_query,previous_day_count,today_count,diff])
 
     # Insert the record into the db
     cnx = mysql_connect("test_cab")
@@ -22,8 +27,7 @@ def verify_data_in_db_helper(count, query_number, desc_query):
     cnx.close()
 
     if today_count != previous_day_count:
-        diff = int(today_count)-int(previous_day_count)
-        if diff != (10/100)*int(previous_day_count):
+        if diff > (10/100)*int(previous_day_count):
             raise Exception(" There is something going wrong with the data;User count from previous day ="+str(previous_day_count)+":: User count from today = "+str(today_count))
 
 

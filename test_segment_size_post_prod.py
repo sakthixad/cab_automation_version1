@@ -1,16 +1,16 @@
-# import unittest
-# from framework.helpers.segment_size_helper import *
-# import logging
-# import requests
-# import json
-# from framework.helpers.segment_save_helper import *
-#
-# logger = logging.getLogger("cab.tests.SegmentSizeProductTestCases")
-#
-# class SegmentSizeProductTestCases(unittest.TestCase):
-#
-#  cnx = None
-#
+import unittest
+from framework.helpers.segment_size_helper import *
+import logging
+import requests
+import json
+from framework.helpers.segment_save_helper import *
+
+logger = logging.getLogger("cab.tests.SegmentSizeProductTestCases")
+
+class SegmentSizeProductTestCases(unittest.TestCase):
+
+ cnx = None
+
 # #  # # Find users who live in US and visited KFC
 # #  # def test_users_in_usa_and_visited_kfc(self):
 # #  #
@@ -371,183 +371,287 @@
 # #  # # 961522638
 # #  #
 # #  # # 14428979
-# #  # def test_users_who_dont_have_countries(self):
-# #  #
-# #  #    request = {
-# #  #              "OR":{"country":["us","de","in","fr","cn","gb","jp","es","ca","it","au","mx","nl","at","be","ch","dk","fi","lu","no","se","nz"]}
-# #  #               }
-# #  #    segment_save_post("OR",request)
-# #
-# #  # def test_users_who_dont_have_countries(self):
-# #  #
-# #  #    request = {
-# #  #              "country":{"direct":["us"]},
-# #  #              "NOT":{"country":["us"]}
-# #  #               }
-# #  #    segment_save_post("OR",request)
-# #
-# #
+#  def test_users_who_dont_have_countries(self):
+#
+#     # # request = {
+#     # #           "OR":{"country":["us","de","in","fr","cn","gb","jp","es","ca","it","au","mx","nl","at","be","ch","dk","fi","lu","no","se","nz"]}
+#     # #            }
+#     # #
+#     # request = {"type": "OR", "value": [{"type": "country", "value": "us"}, {"type": "country", "value": "de"}, {"type": "country", "value": "in"}, {"type": "country", "value": "fr"}, {"type": "country", "value": "cn"}, {"type": "country", "value": "gb"}, {"type": "country", "value": "jp"}, {"type": "country", "value": "es"}, {"type": "country", "value": "ca"}, {"type": "country", "value": "it"}, {"type": "country", "value": "au"}, {"type": "country", "value": "mx"}, {"type": "country", "value": "nl"}, {"type": "country", "value": "at"}, {"type": "country", "value": "be"}, {"type": "country", "value": "ch"}, {"type": "country", "value": "dk"}, {"type": "country", "value": "fi"}, {"type": "country", "value": "lu"}, {"type": "country", "value": "no"}, {"type": "country", "value": "se"}, {"type": "country", "value": "nz"}]}
+#     #
+#     # path = API_URL + "/segment_save?query="+json.dumps(request)+"&segment_md5=1003"
+#     # logger.debug("Request Path: "+path)
+#     # logger.debug("Request Body: " +json.dumps(request))
+#     # response = requests.get(path)
+#     #
+#     # logger.debug("Response Body: " + str(response.content))
+#     # logger.debug("Response Code: " + str(response.status_code))
+#
+#     num1= 1222122387
+#     num2= 1103900291
+#
+#     print num1-num2
+
+
+# #  # 1222122387 # 1103900291
+#  def test_users_who_dont_have_countries(self):
+#
+#     request = {
+#               "country":{"direct":["us"]},
+#               "NOT":{"country":["us"]}
+#                }
+#     segment_save_post("OR",request,db_validation=False)
+
+
 # #  # def test_users_who_dont_have_countries(self):
 # #  #
 # #  #
 # #  #    segment_size_post_single_object("country","fr",db_validation=False)
 # #
+# #
+#  def test_users_in_usa_and_ca_or_ny_(self):
+#
+#         logger.info("### Usecase: Find users who live in US and visited walmart and visited restaurants and golfers ###")
+#
+#         request = {
+#                 "type": "AND",
+#                 "value": [{
+#                     "type": "country",
+#                     "value": "us"
+#                 }, {
+#                     "type": "OR",
+#                     "value": [{
+#                         "type": "brand",
+#                         "value": {
+#                             "id": 9
+#                         }
+#                     }, {
+#                         "type": "behavior",
+#                         "value": "go"
+#                     },
+#                         {
+#                         "type": "category",
+#                         "value": {
+#                             "id": "581208"
+#                         }
+#                     }
+#                         ]
+#                 }
+#             ]
+#             }
+#
+#         path = API_URL + "/segment_size?query="+str(json.dumps(request))
+#         logger.debug("Request Path: "+path)
+#         logger.debug("Request Body: " +json.dumps(request))
+#         response = requests.get(path)
+#
+#         logger.debug("Response Body: " + str(response.content))
+#         logger.debug("Response Code: " + str(response.status_code))
+
+ # def test_users_in_usa_and_visited_walmart_and_restaurants_golfers(self):
+ #
+ #        logger.info("### Usecase: Find users who live in US and visited walmart and visited restaurants and golfers ###")
+ #
+ #        request = {
+ #                "type": "AND",
+ #                "value": [{
+ #                    "type": "country",
+ #                    "value": "us"
+ #                }, {
+ #                    "type": "AND",
+ #                    "value": [{
+ #                        "type": "brand",
+ #                        "value": {
+ #                            "id": 9
+ #                        }
+ #                    }, {
+ #                        "type": "behavior",
+ #                        "value": "go"
+ #                    },
+ #                        {
+ #                        "type": "category",
+ #                        "value": {
+ #                            "id": "458106"
+ #                        }
+ #                    }
+ #                        ]
+ #                },
+ #                    {
+ #                        "type": "state",
+ #                        "value": "ca"
+ #                    },
+ #                    {
+ #                        "type" :"NOT",
+ #                        "value" :{"type":"dma","value":803}
+ #                    },
+ #
+ #                    {
+ #                        "type":"gender",
+ #                        "value":"m"
+ #                    },
+ #                    {
+ #                        "type":"segment",
+ #                        "value":"336555"
+ #                    },
+ #
+ #                    {
+ #                        "type":"AND","value":[{ "type": "NOT","value" :{"type":"brand","value":{"id": 10}}},
+ #                                              { "type": "NOT","value" :{"type":"behavior","value":"bt"}}]
+ #
+ #
+ #                    },
+ #                    {
+ #                        "type": "OR",
+ #                        "value":[{"type":"age","value":2},{"type": "age","value": 3}]
+ #                    },
+ #                {
+ #                        "type" :"NOT",
+ #                        "value" :{"type":"segment","value":336560}
+ #                    }]
+ #            }
+ #
+ #        # request = {
+        #         "type": "AND",
+        #         "value": [{
+        #             "type": "country",
+        #             "value": "us"
+        #         }, {
+        #             "type": "OR",
+        #             "value": [{
+        #                 "type": "category",
+        #                 "value": {
+        #                     "id": "581208"
+        #                 }
+        #             }, {
+        #                 "type": "brand",
+        #                 "value": {
+        #                     "id": 9
+        #                 }
+        #             }, {
+        #                 "type": "behavior",
+        #                 "value": "go"
+        #             },
+        #                 ]
+        #         },
+        #             {
+        #                 "type": "state",
+        #                 "value": "ca"
+        #             },
+        #             {
+        #                 "type" :"NOT",
+        #                 "value" :{"type":"dma","value":803}
+        #             },
+        #                     {
+        #                 "type":"AND","value":[{ "type": "NOT","value" :{"type":"brand","value":{"id": 10}}},
+        #                                       { "type": "NOT","value" :{"type":"behavior","value":"bt"}}]
+        #
+        #
+        #             }
+        #             ,
+        #
+        #             {
+        #                 "type":"gender",
+        #                 "value":"m"
+        #             },
+        #
+        #             {
+        #                 "type": "OR",
+        #                 "value":[{"type":"age","value":2},{"type": "age","value": 3}]
+        #             }]
+        #     }
+        #
+        # path = API_URL + "/segment_size?query="+str(json.dumps(request))
+        # logger.debug("Request Path: "+path)
+        # logger.debug("Request Body: " +json.dumps(request))
+        # response = requests.get(path)
+        #
+        # logger.debug("Response Body: " + str(response.content))
+        # logger.debug("Response Code: " + str(response.status_code))
+
+#  def test_users_in_usa_and_state_california_or_texas_or_dma_austin(self):
+#
+#         logger.info("### Usecase: Find users in usa and state california or in state texas or in dma austin ###")
+#
+#         # request = {
+#         #         "type": "AND",
+#         #         "value": [
+# 			# 	  {"type": "country","value": "us"},
+# 			# 	  {"type": "OR", "value": [{"type":"dma","value":635},
+# 			# 							   {"type":"OR","value":[{"type":"state","value":"ca"},{"type":"state","value":"ny"}]}] }
+# 			# 	]
+#         #         }
+#
+#         request = {
+#                 "type": "AND",
+#                 "value": [
+# 				  {"type": "country","value": "us"},
+# 				  {"type": "OR", "value": [{"type":"dma","value":635},
+# 										   {"type":"OR","value":[{"type":"state","value":"ca"},{"type":"state","value":"ny"}]}] },
+#                     {"type": "NOT","value":{"type":"dma","value":803}}
+# 				]
+#                 }
+#
+#         path = API_URL + "/segment_size?query="+str(json.dumps(request))
+#         logger.debug("Request Path: "+path)
+#         logger.debug("Request Body: " +json.dumps(request))
+#         response = requests.get(path)
+#
+#         logger.debug("Response Body: " + str(response.content))
+#         logger.debug("Response Code: " + str(response.status_code))
 # # #
-# #  def test_users_in_usa_and_ca_or_ny_(self):
-# #
-# #         logger.info("### Usecase: Find users who live in US and visited walmart and visited restaurants and golfers ###")
-# #
-# #         request = {
-# #                   "country":{"direct":["us"]},
-# #                   "brand":{"direct":[9]},
-# #                   "category":{"direct":["l:581208"]},
-# #                   "behavior":{"direct":["go"]},
-# #         }
-# #         segment_size_post("OR",request,db_validation=False)
-# #
-#  # def test_users_in_usa_and_visited_walmart_and_restaurants_golfers(self):
-#  #
-#  #        logger.info("### Usecase: Find users who live in US and visited walmart and visited restaurants and golfers ###")
-#  #
-#  #        request = {
-#  #                "type": "AND",
-#  #                "value": [{
-#  #                    "type": "country",
-#  #                    "value": "us"
-#  #                }, {
-#  #                    "type": "AND",
-#  #                    "value": [{
-#  #                        "type": "category",
-#  #                        "value": {
-#  #                            "id": "581208"
-#  #                        }
-#  #                    }, {
-#  #                        "type": "brand",
-#  #                        "value": {
-#  #                            "id": 9
-#  #                        }
-#  #                    }, {
-#  #                        "type": "behavior",
-#  #                        "value": "go"
-#  #                    },
-#  #                        ]
-#  #                },
-#  #                    {
-#  #                        "type": "state",
-#  #                        "value": "ca"
-#  #                    },
-#  #                    {
-#  #                        "type" :"NOT",
-#  #                        "value" :[{"type":"dma","value":803}]
-#  #                    },
-#  #
-#  #                    {
-#  #                        "type":"gender",
-#  #                        "value":"m"
-#  #                    },
-#  #                    {
-#  #                        "type":"AND","value":[{ "type": "NOT","value" :[{"type":"brand","value":{"id": 10}}]},
-#  #                                              { "type": "NOT","value" :[{"type":"behavior","value":"bt"}]}]
-#  #
-#  #
-#  #                    },
-#  #                    {
-#  #                        "type": "OR",
-#  #                        "value":[{"type":"age","value":2},{"type": "age","value": 3}]
-#  #                    }]
-#  #            }
-#  #
-#  #        path = API_URL + "/segment_size?query="+str(json.dumps(request))
-#  #        logger.debug("Request Path: "+path)
-#  #        logger.debug("Request Body: " +json.dumps(request))
-#  #        response = requests.get(path)
-#  #
-#  #        logger.debug("Response Body: " + str(response.content))
-#  #        logger.debug("Response Code: " + str(response.status_code))
-#
-# #  def test_users_in_usa_and_state_california_or_texas_or_dma_austin(self):
-# #
-# #         logger.info("### Usecase: Find users in usa and state california or in state texas or in dma austin ###")
-# #
-# #         # request = {
-# #         #         "type": "AND",
-# #         #         "value": [
-# # 			# 	  {"type": "country","value": "us"},
-# # 			# 	  {"type": "OR", "value": [{"type":"dma","value":635},
-# # 			# 							   {"type":"OR","value":[{"type":"state","value":"ca"},{"type":"state","value":"ny"}]}] }
-# # 			# 	]
-# #         #         }
-# #
-# #         request = {
-# #                 "type": "AND",
-# #                 "value": [
-# # 				  {"type": "country","value": "us"},
-# # 				  {"type": "OR", "value": [{"type":"dma","value":635},
-# # 										   {"type":"OR","value":[{"type":"state","value":"ca"},{"type":"state","value":"ny"}]}] },
-# #                     {"type": "NOT","value":[{"type":"dma","value":803}]}
-# # 				]
-# #                 }
-# #
-# #         path = API_URL + "/segment_size?query="+str(json.dumps(request))
-# #         logger.debug("Request Path: "+path)
-# #         logger.debug("Request Body: " +json.dumps(request))
-# #         response = requests.get(path)
-# #
-# #         logger.debug("Response Body: " + str(response.content))
-# #         logger.debug("Response Code: " + str(response.status_code))
-#
-#  # def test_state_ca_ny_hampshire_not_dmas(self):
-#  #        logger.info("### Usecase: Find users who live in US and visited walmart and visited restaurants and golfers ###")
-#  #
-#  #        request = {
-#  #                        "type": "AND",
-#  #                        "value": [
-#  #                          {"type": "country","value": "us"},
-#  #                          {"type": "OR","value": [{"type": "state","value": "ca"},
-#  #                                                  {"type": "state","value": "mn"},
-#  #                                                  {"type": "state","value": "nh"}
-#  #                                                 ]
-#  #                          },
-#  #                          {
-#  #                           "type": "OR","value": [{"type": "NOT","value": [{"type": "dma","value": 803}]},
-#  #                                                  {"type": "NOT","value": [{"type": "dma","value": 613}]}]
-#  #
-#  #                          }
-#  #
-#  #                          ]
-#  #                    }
-#  #
-#  #        path = API_URL + "/segment_size?query="+str(json.dumps(request))
-#  #        logger.debug("Request Path: "+path)
-#  #        logger.debug("Request Body: " +json.dumps(request))
-#  #        response = requests.get(path)
-#  #
-#  #        logger.debug("Response Body: " + str(response.content))
-#  #        logger.debug("Response Code: " + str(response.status_code))
-#  #
-#  #
-#  #
+ # def test_state_ca_ny_hampshire_not_dmas(self):
+ #        logger.info("### Usecase: Find users who live in US and visited ca,ny ###")
+ #
+ #        request = {
+ #                        "type": "AND",
+ #                        "value": [
+ #                          {"type": "country","value": "us"},
+ #                          {"type": "OR","value": [{"type": "state","value": "ca"},
+ #                                                  {"type": "state","value": "mn"},
+ #                                                  {"type": "state","value": "ny"}
+ #                                                 ]
+ #                          },
+ #                          {
+ #                           "type": "OR","value": [{"type": "NOT","value": {"type": "dma","value": 803}},
+ #                                                  {"type": "NOT","value": {"type": "dma","value": 613}}]
+ #
+ #                          }
+ #
+ #                          ]
+ #                    }
+ #
+ #        path = API_URL + "/segment_size?query="+str(json.dumps(request))
+ #        logger.debug("Request Path: "+path)
+ #        logger.debug("Request Body: " +json.dumps(request))
+ #        response = requests.get(path)
+ #
+ #        logger.debug("Response Body: " + str(response.content))
+ #        logger.debug("Response Code: " + str(response.status_code))
+
+
+
 #
 #
 #
 #
-#  #Usecase: Find users who live in country US and belong to custom audience seg1='94167' or seg='93767'
-#  def test_country_and_segments_with_and(self):
-#
-#      logger.info("### Usecase:Find users who live in country US and belong to custom audience seg1='94167' or seg='93767 ###")
-#      request = {
-#           "OR":{"segment":["202551","202566"]},
-#           "OR":{"segment":["214886","214906"]},
-#           "country":{"direct":["us"]}
-#
-#      }
-#
-#      segment_size_post("AND",request,db_validation=True)
-#
-#
-#
-#
-#
-#
-# if __name__ == '__main__':
-#     unittest.main()
+ # Usecase: Find users who live in country US and belong to custom audience seg1='94167' or seg='93767'
+ def test_country_and_segments_with_and(self):
+
+     logger.info("### Usecase:Find users who live in country US and belong to custom audience seg1='94167' or seg='93767 ###")
+     request = {
+          "OR":{"segment":["202551","214996"]},
+          "country":{"direct":["us"]},
+          "NOT":{"segment":["330465"]},
+          "segment":{"direct":["336555"]}
+
+     }
+
+     segment_size_post("AND",request,db_validation=True)
+
+
+
+
+
+
+if __name__ == '__main__':
+    unittest.main()
