@@ -973,7 +973,7 @@ class ProductionTests(unittest.TestCase):
      logger.info("#######################################################")
      logger.info("################## Query Results ######################")
      logger.info("#######################################################")
-     print t
+     print t.draw()
 
 
 
