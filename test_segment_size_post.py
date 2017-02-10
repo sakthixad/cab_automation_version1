@@ -241,16 +241,16 @@ class SegmentSizePostTests(unittest.TestCase):
     #
     #  ##################### Categories and Country #######################
     #
-    #  #Usecase: Find users who belong to category departmental stores lives in country us
-    #  def test_categories_and_country_combination(self):
-    #
-    #      logger.info("### Usecase: Find users who belong to category departmental stores lives in country US ###")
-    #      request = {
-    #           "AND":{"category":["l:531102"]},
-    #           "country":{"direct":["us"]}
-    #      }
-    #
-    #      segment_size_post("AND",request,db_validation=True)
+     # #Usecase: Find users who belong to category departmental stores lives in country us
+     # def test_categories_and_country_combination(self):
+     #
+     #     logger.info("### Usecase: Find users who belong to category departmental stores lives in country US ###")
+     #     request = {
+     #          "category":{"direct":["l:531102"]},
+     #          "country":{"direct":["us"]}
+     #     }
+     #
+     #     segment_size_post("AND",request,db_validation=False)
     #
     #  #Usecase: Find users who belong to category departmental stores and restaurants and lives in country us
     #  def test_categories_and_country_combination(self):
