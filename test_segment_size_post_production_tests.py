@@ -1492,15 +1492,14 @@ class ProductionTests(unittest.TestCase):
     verify_data_in_db_helper(count,"78",query)
 
  ## Find users who live in US and are female and are stay at homes ##
- def test_users_in_us_and_behavior_and_are_female(self):
+ def test_users_in_us_and_stay_at_mom_and_are_female(self):
 
      query = "Find users who lives in country US and female and are stay at moms"
      logger.info("### Usecase:"+str(query)+" ###")
      request = {
           "country":{"direct":["us"]},
-          "behavior":{"direct":["330465"]},
+          "behavior":{"direct":["shmom"]},
           "gender":{"direct":["f"]}
-
      }
 
      count = segment_size_post("AND",request,db_validation=False)

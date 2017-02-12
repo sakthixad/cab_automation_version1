@@ -4,7 +4,6 @@ from prettytable import PrettyTable
 from texttable import Texttable
 
 t= Texttable()
-# t= PrettyTable(['Query', 'Previous_build_count', 'New_build_count', 'Difference_in_Count'])
 t.add_row(['Query', 'Previous_build_count', 'New_build_count', 'Difference_in_Count'])
 
 
