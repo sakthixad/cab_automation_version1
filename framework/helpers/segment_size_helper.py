@@ -34,8 +34,14 @@ def segment_size_post(main_type,generic_input_dict,db_validation):
     if response.status_code is 200:
 
        response_result = response.json()['num_audience']
+       response_time = response.json()['response_time']
 
        if db_validation is True:
+
+            # Make sure that the response time is less than 500 ms
+            response_time_final = response_time.replace("us","")
+            if int(response_time_final) > 500000 :
+                raise Exception(" The response time cannot be more than 500 milliseconds")
 
             # DB Validations
             input_for_query_builder = token_converter_for_query_builder(generic_input_dict)
@@ -77,8 +83,14 @@ def segment_size_post_single_object(type,value,db_validation):
     if response.status_code is 200:
 
        response_result = response.json()['num_audience']
+       response_time = response.json()['response_time']
 
        if db_validation is True:
+
+            # Make sure that the response time is less than 500 ms
+            response_time_final = response_time.replace("us","")
+            if int(response_time_final) > 500000 :
+                raise Exception(" The response time cannot be more than 500 milliseconds")
 
             # DB Validations
             main_query= "select count(distinct uid) from userstore where token='"+str(token_converter_for_query_builder(type))+"'AND token_value= '"+str(value)+"'"

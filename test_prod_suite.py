@@ -1,12 +1,9 @@
-import unittest
 import xmlrunner
 from test_segment_size_post_production_tests import *
 
 if __name__ == "__main__":
 
     test_classes_to_run = [ProductionTests]
-
-
 
     loader = unittest.TestLoader()
 
