@@ -1,8 +1,31 @@
 import json
 
+def build_request_payload_for_single_attribute(main_type,token_map):
+
+    if len(token_map) is 1:
+        main_value_list = []
+        for key in token_map:
+            key1 = key
+            value1 = token_map[key1]
+            for key in value1:
+                if key != "direct":
+                    value_list = value1[key]
+                    for ele in value_list:
+                        dict1 = dict()
+                        dict1['type']= key
+                        dict1['value']=ele
+                        main_value_list.append(dict1)
+        main_value = main_value_list
+        request = {
+                    "type": main_type,
+                    "value": main_value
+                  }
+    return json.dumps(request).replace("l:","")
+
+
 def build_request_payload_segment_size(main_type,token_map):
 
-    main_value = []
+    main_value =[]
 
     for key in token_map:
 
@@ -101,3 +124,13 @@ def build_request_payload_segment_size(main_type,token_map):
         "value": main_value
     }
     return json.dumps(request).replace("l:","")
+
+def build_request_payload_nested(main_type,token_map):
+
+    main_value = []
+    request= {
+        "type": main_type,
+        "value": main_value
+    }
+    return json.dumps(request).replace("l:","")
+
