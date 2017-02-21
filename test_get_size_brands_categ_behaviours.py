@@ -20,7 +20,7 @@ class GetSizeForAllBrandsCategoriesBehaviors(unittest.TestCase):
          # Get the list of brands from the xadcms db
          brand_name= dict()
          conn = mysql_connect_prod("xadcms")
-         query = "select * from brands where del=0 limit 5"
+         query = "select * from brands where del=0 "
          brands_list = get_all_result(conn,query)
          for row in brands_list:
              brand_name[row['id']] = row['brand_name']
@@ -87,7 +87,7 @@ class GetSizeForAllBrandsCategoriesBehaviors(unittest.TestCase):
          # Get the list of brands from the xadcms db
          categ_name= dict()
          conn = mysql_connect_prod("xadcms")
-         query = "select * from category where del=0 limit 5"
+         query = "select * from category where del=0 "
          categ_list = get_all_result(conn,query)
          for row in categ_list:
              list=[]
