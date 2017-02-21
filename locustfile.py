@@ -6,6 +6,7 @@ import requests
 
 class MyTaskSet(TaskSet):
 
+
     @task(1)
     def segment_post(l):
 
@@ -46,6 +47,7 @@ class MyTaskSet(TaskSet):
 
 
 class MyLocust(HttpLocust):
+    weight = 1
     task_set = MyTaskSet
     min_wait = 5000
     max_wait = 15000

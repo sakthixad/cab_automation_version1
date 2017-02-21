@@ -9,6 +9,15 @@ def mysql_connect(db_name):
                                          database=db_name)
     return cnx
 
+def mysql_connect_prod(db_name):
+
+    cnx = connection.MySQLConnection(user='apps',
+                                         password='appsxaddb',
+                                         host='app-int.db.xad.com',
+                                         port=3336,
+                                         database=db_name)
+    return cnx
+
 
 
 def mysql_close_connection(cnx):
